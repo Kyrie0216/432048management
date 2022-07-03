@@ -27,7 +27,7 @@
 
     </el-card>
     <el-card shadow="none">
-      <div class="dashboard-text">dayData: {{ dayData }}</div>
+      <div ref="chart" style="width: 100%; height: 500px" />
     </el-card>
   </div>
 </template>
@@ -35,6 +35,8 @@
 <script>
 // import { mapGetters } from 'vuex'
 import { dayCount, monCount } from '@/api/user'
+let Echarts = require('echarts/lib/echarts') // 基础实例 注意不要使用import
+require('echarts/lib/chart/bar') // 按需引入 bar = 柱状图
 export default {
   name: 'Dashboard',
   data() {
@@ -45,11 +47,13 @@ export default {
         type: 0,
         day: new Date().Format(0),
         month: new Date().Format(1)
-      }
+      },
+      chart: null
     }
   },
   mounted() {
     this.getList(this.form.type)
+    this.echartsInit()
   },
   methods: {
     getList(type) {
@@ -73,6 +77,15 @@ export default {
     },
     onSubmit() {
       this.getList(this.form.type)
+    },
+    echartsInit() {
+      this.chart = Echarts.init(this.$refs.chart)
+      let option = {
+        xAxis: { type: 'category', data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }, // X轴
+        yAxis: { type: 'value' }, // Y轴
+        series: [{ data: [120, 200, 150, 80, 70, 110, 130], type: 'bar' }] // 配置项
+      }
+      this.chart.setOption(option)
     }
   }
 }

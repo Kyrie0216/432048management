@@ -12,6 +12,8 @@ import App from './App'
 import store from './store'
 import router from './router'
 
+import echarts from 'echarts'
+
 import '@/icons' // icon
 // import '@/permission' // permission control
 
@@ -57,6 +59,8 @@ Date.prototype.Format = function(type) {
         return `${new Date().getFullYear()}-${month}`
     }
 }
+
+Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false
 
